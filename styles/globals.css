@@ -2,6 +2,476 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom scrollbar styles for modern dropdown */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.2);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.4);
+}
+
+/* Smooth animations for dropdown */
+@keyframes fade-in-0 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in-95 {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in-0 {
+  animation: fade-in-0 0.15s ease-out;
+}
+
+.zoom-in-95 {
+  animation: zoom-in-95 0.15s ease-out;
+}
+
+/* Hierarchical Categories Animations */
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-from-bottom {
+  animation: slide-in-from-bottom 0.3s ease-out;
+}
+
+.slide-in-from-right {
+  animation: slide-in-from-right 0.2s ease-out;
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  .category-card {
+    min-height: 56px;
+    padding: 16px;
+  }
+  
+  .category-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+}
+
+/* Improved scrollbar for category areas */
+.category-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.category-scroll::-webkit-scrollbar-track {
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 4px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.3);
+  border-radius: 4px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Modern Articles List Enhancements */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Enhanced product card hover effects */
+.product-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px hsl(var(--primary) / 0.1);
+}
+
+/* Price highlight animation */
+@keyframes price-highlight {
+  0% { background-color: transparent; }
+  50% { background-color: hsl(var(--primary) / 0.1); }
+  100% { background-color: transparent; }
+}
+
+.price-highlight {
+  animation: price-highlight 0.6s ease-in-out;
+}
+
+/* Mobile-optimized touch targets */
+@media (hover: none) and (pointer: coarse) {
+  .product-card {
+    min-height: 140px;
+    border-width: 1px;
+  }
+  
+  .product-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease-out;
+  }
+  
+  /* Ensure buttons are at least 44px tall on mobile */
+  .mobile-button {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  /* Better spacing for mobile cards */
+  .mobile-card-content {
+    padding: 12px;
+  }
+
+  /* Touch-optimized search inputs */
+  .mobile-search-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 48px;
+  }
+
+  /* Improved pagination buttons for mobile */
+  .mobile-pagination-button {
+    min-height: 44px;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Enhanced mobile layout adjustments */
+@media (max-width: 640px) {
+  /* Compact article cards for mobile */
+  .mobile-article-grid {
+    padding: 8px;
+    gap: 12px;
+  }
+
+  .mobile-article-card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .mobile-article-image {
+    min-height: 180px;
+  }
+
+  .mobile-article-content {
+    padding: 16px 12px;
+  }
+
+  /* Better header spacing on mobile */
+  .mobile-articles-header {
+    padding: 16px 20px;
+  }
+
+  /* Improved filter panel on mobile */
+  .mobile-filter-panel {
+    margin: -16px;
+    padding: 20px;
+    border-radius: 0;
+  }
+}
+
+/* Article Details Mobile Optimizations */
+.article-details-mobile {
+  /* Mobile sticky add to cart */
+  .mobile-sticky-cart {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid hsl(var(--border) / 0.5);
+    padding: 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mobile tabs optimization */
+  .mobile-tabs-trigger {
+    min-height: 44px;
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  /* Mobile image gallery */
+  .mobile-gallery-main {
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--muted) / 0.1));
+  }
+
+  .mobile-thumbnail-strip {
+    gap: 8px;
+    padding: 0 4px;
+  }
+
+  /* Mobile product header */
+  .mobile-product-title {
+    font-size: 20px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .mobile-product-price {
+    font-size: 28px;
+    font-weight: 800;
+  }
+
+  /* Mobile quantity selector */
+  .mobile-quantity-controls {
+    background: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 12px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+
+  .mobile-quantity-button {
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile feature cards */
+  .mobile-feature-card {
+    padding: 12px;
+    background: hsl(var(--muted) / 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  /* Mobile badge sizing */
+  .mobile-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+}
+
+/* Dark mode mobile sticky cart */
+@media (prefers-color-scheme: dark) {
+  .mobile-sticky-cart {
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  @supports (backdrop-filter: blur(20px)) {
+    .mobile-sticky-cart {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
+
+/* Enhanced image hover effects for desktop */
+.product-image-hover {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-image-hover:hover {
+  transform: scale(1.02);
+}
+
+/* Smooth thumbnail transitions */
+.thumbnail-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.thumbnail-transition:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Image gallery enhancements */
+.gallery-main-image {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.gallery-navigation-arrow {
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(12px);
+}
+
+.gallery-navigation-arrow:hover {
+  transform: scale(1.1);
+  background: hsl(var(--background) / 0.9);
+}
+
+.gallery-thumbnail-grid {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.3) transparent;
+}
+
+.gallery-thumbnail-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.gallery-thumbnail-grid::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.gallery-thumbnail-grid::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.3);
+  border-radius: 3px;
+}
+
+.gallery-thumbnail-grid::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Gallery image counter */
+.gallery-counter {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .gallery-counter {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Price animation */
+@keyframes price-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.price-pulse {
+  animation: price-pulse 2s ease-in-out infinite;
+}
+
+/* Tab content animations */
+.tab-content-enter {
+  animation: slide-in-from-bottom 0.3s ease-out;
+}
+
+/* Mobile responsive grid improvements */
+@media (max-width: 768px) {
+  .mobile-detail-grid {
+    display: block;
+    space-y: 24px;
+  }
+
+  .mobile-detail-section {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .mobile-action-buttons {
+    position: sticky;
+    bottom: 0;
+    background: hsl(var(--background));
+    border-top: 1px solid hsl(var(--border));
+    padding: 16px;
+    margin: -16px -16px 0;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .product-image-hover,
+  .thumbnail-transition {
+    transition: none;
+  }
+  
+  .price-pulse {
+    animation: none;
+  }
+  
+  .tab-content-enter {
+    animation: none;
+  }
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, 
+    hsl(var(--muted)) 0%, 
+    hsl(var(--muted-foreground) / 0.1) 50%, 
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+/* Smooth view mode transitions */
+.view-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced badge styles */
+.supplier-badge {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
+  border: 1px solid hsl(var(--primary) / 0.2);
+  transition: all 0.2s ease;
+}
+
+.supplier-badge:hover {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1));
+  transform: translateY(-1px);
+}
+
 
 
 :root {

@@ -59,25 +59,7 @@ export default function HomePage() {
 
       <main className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Recherche de Pièces Automobiles
-            </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Trouvez facilement les pièces compatibles avec votre véhicule grâce à notre base de données
-              professionnelle TecDoc
-            </p>
-          </div>
-
-                      <div className="text-center mb-8">
-              <h2 className="text-2xl font-semibold text-foreground mb-4">
-                Recherche par Véhicule
-              </h2>
-              <p className="text-muted-foreground mb-6">
-                Sélectionnez votre véhicule pour trouver les pièces compatibles
-              </p>
-              <VehicleSelector />
-            </div>
+          <VehicleSelector />
 
             {searchQuery && (
               <div className="mt-12">

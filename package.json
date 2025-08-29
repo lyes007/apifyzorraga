@@ -13,11 +13,11 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
-    "vercel-build": "echo 'Building CSS...' && npx tailwindcss -i ./app/globals.css -o ./app/output.css --minify && echo 'CSS built successfully' && echo 'Generating Prisma client...' && prisma generate && echo 'Building Next.js...' && next build",
+    "vercel-build": "echo 'Building CSS...' && npx tailwindcss -i ./styles/globals.css -o ./app/output.css --minify && echo 'CSS built successfully' && echo 'Generating Prisma client...' && prisma generate && echo 'Building Next.js...' && next build",
     "build:vercel": "prisma generate && next build",
-    "build:css": "npx tailwindcss -i ./app/globals.css -o ./app/output.css --minify",
-    "build:production": "npx tailwindcss -i ./app/globals.css -o ./app/output.css --minify && next build",
-    "prebuild": "npx tailwindcss -i ./app/globals.css -o ./app/output.css --minify"
+    "build:css": "npx tailwindcss -i ./styles/globals.css -o ./app/output.css --minify",
+    "build:production": "npx tailwindcss -i ./styles/globals.css -o ./app/output.css --minify && next build",
+    "prebuild": "npx tailwindcss -i ./styles/globals.css -o ./app/output.css --minify"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -38,6 +38,9 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.0.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -4,11 +4,11 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 
 // CSS must be imported first - before any components
-import "./globals.css"
+import "../styles/globals.css"
+import "./output.css"
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { CartProvider } from "@/hooks/use-cart"
-import { CSSDebug } from "@/components/css-debug"
 
 export const metadata: Metadata = {
   title: "Zorraga Pièces Auto - Recherche de Pièces Automobiles",
@@ -27,7 +27,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <CartProvider>
             {children}
-            <CSSDebug />
           </CartProvider>
         </ThemeProvider>
       </body>

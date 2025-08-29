@@ -1,0 +1,220 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User management
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  addresses Address[]
+  orders    Order[]
+
+  @@map("users")
+}
+
+// Address management
+model Address {
+  id          String   @id @default(cuid())
+  userId      String?
+  type        AddressType // shipping or billing
+  firstName   String
+  lastName    String
+  company     String?
+  addressLine1 String
+  addressLine2 String?
+  city        String
+  state       String?
+  postalCode  String
+  country     String   @default("Tunisia")
+  phone       String?
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shippingOrders Order[] @relation("OrderShippingAddress") // orders shipped to this address
+  billingOrders  Order[] @relation("OrderBillingAddress")  // orders billed to this address
+
+  @@map("addresses")
+}
+
+// Order management
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique // Human-readable order number
+  userId        String?
+  status        OrderStatus @default(PENDING)
+  
+  // Customer information (can be guest or registered user)
+  customerEmail String
+  customerFirstName String
+  customerLastName  String
+  customerPhone     String?
+  
+  // Addresses
+  shippingAddressId String
+  billingAddressId  String?
+  
+  // Financial information
+  subtotal         Decimal   @db.Decimal(10, 2)
+  shippingCost     Decimal   @db.Decimal(10, 2) @default(0)
+  taxAmount        Decimal   @db.Decimal(10, 2) @default(0)
+  totalAmount      Decimal   @db.Decimal(10, 2)
+  currency         String    @default("TND")
+  
+  // Payment information
+  paymentMethod   PaymentMethod?
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentIntentId String? // For payment processor integration
+  
+  // Shipping information
+  shippingMethod  String?
+  trackingNumber  String?
+  estimatedDelivery DateTime?
+  
+  // Order metadata
+  notes           String?
+  source          OrderSource @default(WEBSITE)
+  
+  // Timestamps
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  placedAt        DateTime?  // When order was confirmed
+  shippedAt       DateTime?  // When order was shipped
+  deliveredAt     DateTime?  // When order was delivered
+  cancelledAt     DateTime?  // When order was cancelled
+
+  // Relations
+  user            User?      @relation(fields: [userId], references: [id])
+  shippingAddress Address    @relation("OrderShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress  Address?   @relation("OrderBillingAddress", fields: [billingAddressId], references: [id])
+  orderItems      OrderItem[]
+  orderHistory    OrderStatusHistory[]
+
+  @@map("orders")
+}
+
+// Order items
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  articleId   Int      // TecDoc article ID
+  articleNo   String   // Article reference number
+  name        String   // Article name
+  supplier    String   // Supplier name
+  price       Decimal  @db.Decimal(10, 2)
+  quantity    Int
+  image       String?  // Image URL
+  
+  // Relations
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
+
+// Order status history tracking
+model OrderStatusHistory {
+  id          String      @id @default(cuid())
+  orderId     String
+  status      OrderStatus
+  notes       String?
+  createdAt   DateTime    @default(now())
+  createdBy   String?     // User ID who changed the status
+  
+  // Relations
+  order       Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_status_history")
+}
+
+// Cart items (for guest users or temporary storage)
+model CartItem {
+  id          String   @id @default(cuid())
+  sessionId   String   // Guest session ID or user ID
+  articleId   Int      // TecDoc article ID
+  articleNo   String   // Article reference number
+  name        String   // Article name
+  supplier    String   // Supplier name
+  price       Decimal  @db.Decimal(10, 2)
+  quantity    Int
+  image       String?  // Image URL
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([sessionId, articleId])
+  @@map("cart_items")
+}
+
+// Product prices (for future price management)
+model ProductPrice {
+  id          String   @id @default(cuid())
+  articleId   Int      // TecDoc article ID
+  price       Decimal  @db.Decimal(10, 2)
+  currency    String   @default("TND")
+  validFrom   DateTime @default(now())
+  validTo     DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("product_prices")
+}
+
+// Enums
+enum AddressType {
+  SHIPPING
+  BILLING
+}
+
+enum OrderStatus {
+  PENDING        // Order placed, waiting for confirmation
+  CONFIRMED      // Order confirmed, processing
+  PROCESSING     // Order being prepared
+  READY_TO_SHIP // Order ready for shipping
+  SHIPPED        // Order shipped
+  IN_TRANSIT     // Order in transit
+  DELIVERED      // Order delivered
+  CANCELLED      // Order cancelled
+  REFUNDED       // Order refunded
+  RETURNED       // Order returned
+}
+
+enum PaymentStatus {
+  PENDING    // Payment pending
+  PROCESSING // Payment being processed
+  COMPLETED  // Payment completed
+  FAILED     // Payment failed
+  CANCELLED  // Payment cancelled
+  REFUNDED   // Payment refunded
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  BANK_TRANSFER
+  CREDIT_CARD
+  PAYPAL
+  STRIPE
+}
+
+enum OrderSource {
+  WEBSITE
+  PHONE
+  EMAIL
+  STORE
+}

@@ -47,8 +47,8 @@ interface ArticleData {
   articleMediaFileName: string
     supplierId: number
     mediaInformation: string
-    imageLink: string
-    imageMedia: string
+  imageLink: string
+  imageMedia: string
   }>
   allSpecifications?: Array<{
     specificationName: string
@@ -236,8 +236,8 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
               ))}
             </div>
           </div>
-        </div>
-      </div>
+          </div>
+          </div>
     )
   }
 
@@ -530,7 +530,7 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
-                </div>
+                  </div>
 
                 <Button 
                   onClick={handleAddToCart}
@@ -549,8 +549,8 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                   <Button variant="outline" className="h-11">
                     <Share2 className="h-4 w-4 mr-2" />
                     Partager
-                  </Button>
-                </div>
+                </Button>
+              </div>
               </div>
             </CardContent>
           </Card>
@@ -590,15 +590,15 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                       <li>• Testé en conditions extrêmes</li>
                       <li>• Certification ISO/TS 16949</li>
                     </ul>
-                  </div>
-                  
+                </div>
+
                   {article.eanNo && (
-                    <div className="space-y-2">
+                <div className="space-y-2">
                       <h4 className="font-medium">Codes produit</h4>
                       <div className="space-y-1 text-sm">
                         <div className="flex items-center justify-between">
                           <span className="text-muted-foreground">EAN:</span>
-                          <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                             <code className="bg-muted px-2 py-1 rounded text-xs">
                               {article.eanNo.eanNumbers}
                             </code>
@@ -610,12 +610,12 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                             >
                               <Copy className="h-3 w-3" />
                             </Button>
-                          </div>
-                        </div>
+                  </div>
                       </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
+              )}
+            </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -625,22 +625,22 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5" />
-                  Spécifications techniques
+              Spécifications techniques
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {article.allSpecifications && article.allSpecifications.length > 0 ? (
                   <div className="grid gap-3">
-                    {article.allSpecifications.map((spec, index) => (
+              {article.allSpecifications.map((spec, index) => (
                       <div key={index} className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
                         <span className="text-sm font-medium">{spec.specificationName}</span>
                         <span className="text-sm text-muted-foreground">
                           {spec.specificationValue}
                           {spec.specificationUnit && ` ${spec.specificationUnit}`}
                         </span>
-                      </div>
-                    ))}
-                  </div>
+                </div>
+              ))}
+            </div>
                 ) : (
                   <p className="text-muted-foreground text-center py-8">
                     Aucune spécification technique disponible pour ce produit.
@@ -660,7 +660,7 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
               </CardHeader>
               <CardContent>
                 {article.oemNo && article.oemNo.length > 0 ? (
-                  <div className="space-y-4">
+          <div className="space-y-4">
                     <p className="text-sm text-muted-foreground">
                       Ce produit est compatible avec les références OE suivantes :
                     </p>
@@ -670,7 +670,7 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                           <div>
                             <span className="font-medium text-sm">{oem.manufacturerName}</span>
                             <p className="text-xs text-muted-foreground">Référence OE</p>
-            </div>
+                  </div>
                           <div className="flex items-center gap-2">
                             <code className="bg-background px-2 py-1 rounded text-xs font-mono">
                               {oem.oemNumber}
@@ -683,7 +683,7 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                             >
                               <Copy className="h-3 w-3" />
                             </Button>
-          </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -697,9 +697,9 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                   <p className="text-muted-foreground text-center py-8">
                     Informations de compatibilité non disponibles.
                   </p>
-                )}
-              </CardContent>
-            </Card>
+        )}
+      </CardContent>
+    </Card>
           </TabsContent>
 
           <TabsContent value="delivery" className="mt-6 tab-content-enter">

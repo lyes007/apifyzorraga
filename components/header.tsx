@@ -35,8 +35,10 @@ export function Header() {
   const [searchFocused, setSearchFocused] = useState(false)
   const [recentSearches, setRecentSearches] = useState<string[]>([])
   const [searchHistory, setSearchHistory] = useState<string[]>([])
+  const [mobileSearchExpanded, setMobileSearchExpanded] = useState(false)
   const searchRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const mobileSearchRef = useRef<HTMLInputElement>(null)
   const { toggleCart, getTotalItems } = useCart()
   const router = useRouter()
 
@@ -145,6 +147,27 @@ export function Header() {
     handleSearch(query)
   }
 
+  // Mobile search expansion handlers
+  const expandMobileSearch = () => {
+    setMobileSearchExpanded(true)
+    setTimeout(() => {
+      mobileSearchRef.current?.focus()
+    }, 300)
+  }
+
+  const collapseMobileSearch = () => {
+    setMobileSearchExpanded(false)
+    setSearchQuery("")
+    setShowSearchResults(false)
+    setSearchResults([])
+  }
+
+  // Handle mobile search
+  const handleMobileSearch = async () => {
+    if (!searchQuery.trim()) return
+    await handleSearch()
+  }
+
   const handleArticleSelect = (articleId: number) => {
     setShowSearchResults(false)
     setSearchQuery("")
@@ -228,8 +251,8 @@ export function Header() {
             </div>
           </div>
 
-          {/* Advanced Search Bar */}
-          <div className="relative flex-1 max-w-xl mx-4 lg:mx-8" ref={searchRef}>
+          {/* Desktop Search Bar */}
+          <div className="relative flex-1 max-w-xl mx-4 lg:mx-8 hidden sm:block" ref={searchRef}>
             <div className={`relative transition-all duration-300 ${searchFocused ? 'transform scale-[1.02]' : ''}`}>
               {/* Search Icon */}
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
@@ -276,21 +299,10 @@ export function Header() {
                   variant="ghost"
                   size="icon"
                   onClick={() => handleSearch()}
-                  className="hidden sm:flex h-8 w-8 hover:bg-primary/10 rounded-lg transition-all duration-200"
+                  className="h-8 w-8 hover:bg-primary/10 rounded-lg transition-all duration-200"
                   disabled={!searchQuery.trim()}
                 >
                   <Search className="h-4 w-4 text-primary" />
-                </Button>
-
-                {/* Mobile search button */}
-                <Button
-                  variant="default"
-                  size="icon"
-                  onClick={() => handleSearch()}
-                  className="sm:hidden h-8 w-8 rounded-lg"
-                  disabled={!searchQuery.trim()}
-                >
-                  <Search className="h-4 w-4" />
                 </Button>
               </div>
 
@@ -428,6 +440,20 @@ export function Header() {
                   Parcourir tous les articles
                 </Button>
               </div>
+            )}
+          </div>
+
+          {/* Mobile Search Icon */}
+          <div className="sm:hidden flex items-center">
+            {!mobileSearchExpanded && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={expandMobileSearch}
+                className="h-11 w-11 rounded-xl hover:bg-primary/10 transition-all duration-200 hover:scale-105 search-icon-mobile"
+              >
+                <Search className="h-5 w-5 text-foreground" />
+              </Button>
             )}
           </div>
 
@@ -580,6 +606,139 @@ export function Header() {
           </div>
         )}
       </div>
+
+      {/* Mobile Search Overlay - Covers entire navbar */}
+      {mobileSearchExpanded && (
+        <div className="fixed top-0 left-0 right-0 bg-background border-b border-border/30 shadow-xl z-[9999] mobile-search-overlay">
+          {/* Search Header */}
+          <div className="flex items-center h-16 px-4 border-b border-border/20">
+            <div className="flex-1 relative">
+              <input
+                ref={mobileSearchRef}
+                type="text"
+                placeholder="Rechercher"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleMobileSearch()
+                  } else if (e.key === "Escape") {
+                    collapseMobileSearch()
+                  }
+                }}
+                className="w-full px-4 py-3 bg-muted/30 border border-border/40 rounded-lg text-base 
+                         focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50
+                         placeholder:text-muted-foreground/70 placeholder:text-left mobile-search-input"
+              />
+            </div>
+            
+            {/* Close Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={collapseMobileSearch}
+              className="ml-3 h-10 w-10 rounded-lg hover:bg-muted/80"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+                     {/* Search Content Area */}
+           <div className="max-h-[calc(100vh-4rem)] overflow-y-auto">
+             {/* Recent Searches only when no query */}
+             {!searchQuery && !showSearchResults && recentSearches.length > 0 && (
+               <div className="p-4">
+                 <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                   Recherches récentes
+                 </h3>
+                 <div className="space-y-1">
+                   {recentSearches.map((query, index) => (
+                     <button
+                       key={index}
+                       onClick={() => {
+                         setSearchQuery(query)
+                         handleSearch(query)
+                       }}
+                       className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left recent-search-item"
+                     >
+                       <Clock className="h-4 w-4 text-muted-foreground" />
+                       <span className="text-sm">{query}</span>
+                     </button>
+                   ))}
+                 </div>
+               </div>
+             )}
+
+            {/* Search Results */}
+            {showSearchResults && searchResults.length > 0 && (
+              <div className="p-4">
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                  {searchResults.length} résultat{searchResults.length > 1 ? 's' : ''}
+                </h3>
+                <div className="space-y-2">
+                  {searchResults.slice(0, 8).map((article, index) => (
+                    <div
+                      key={article.articleId}
+                      onClick={() => {
+                        handleArticleSelect(article.articleId)
+                        collapseMobileSearch()
+                      }}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors mobile-search-result"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <div className="w-12 h-12 bg-muted/30 rounded-lg flex-shrink-0 overflow-hidden">
+                        {article.imageLink ? (
+                          <img
+                            src={article.imageLink}
+                            alt={article.articleProductName}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Search className="h-5 w-5 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{article.articleProductName}</p>
+                        <p className="text-sm text-muted-foreground truncate">
+                          Réf: {article.articleNo} • {article.supplierName}
+                        </p>
+                        <p className="text-sm font-semibold text-primary">29,99 TND</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {searchResults.length > 8 && (
+                  <button
+                    onClick={() => {
+                      handleViewAllResults()
+                      collapseMobileSearch()
+                    }}
+                    className="w-full mt-4 p-3 border border-border/40 rounded-lg hover:bg-muted/50 transition-colors text-center text-sm font-medium"
+                  >
+                    Voir tous les {searchResults.length} résultats
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* No results */}
+            {showSearchResults && searchResults.length === 0 && searchQuery && !isSearching && (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <p className="font-medium mb-1">Aucun résultat trouvé</p>
+                <p className="text-sm text-muted-foreground">
+                  Essayez avec d'autres mots-clés ou une référence différente
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   )
 }

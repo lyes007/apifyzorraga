@@ -1,11 +1,11 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Package, BarChart3, Users } from 'lucide-react'
+import { Package, BarChart3 } from 'lucide-react'
 
 interface AdminNavProps {
-  currentView: 'overview' | 'orders' | 'customers' | 'order-detail'
-  onNavigate: (view: 'overview' | 'orders' | 'customers') => void
+  currentView: 'overview' | 'orders' | 'order-detail'
+  onNavigate: (view: 'overview' | 'orders') => void
 }
 
 export function AdminNav({ currentView, onNavigate }: AdminNavProps) {
@@ -29,16 +29,6 @@ export function AdminNav({ currentView, onNavigate }: AdminNavProps) {
       >
         <Package className="h-4 w-4" />
         Commandes
-      </Button>
-      
-      <Button
-        variant={currentView === 'customers' ? 'default' : 'ghost'}
-        size="sm"
-        onClick={() => onNavigate('customers')}
-        className="flex items-center gap-2"
-      >
-        <Users className="h-4 w-4" />
-        Clients
       </Button>
     </div>
   )

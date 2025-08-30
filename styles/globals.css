@@ -571,6 +571,132 @@
   transform: none;
 }
 
+/* Mobile Search Overlay Animation */
+.mobile-search-overlay {
+  animation: mobile-search-overlay-enter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top;
+}
+
+@keyframes mobile-search-overlay-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile search overlay exit animation */
+.mobile-search-overlay-exit {
+  animation: mobile-search-overlay-exit 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes mobile-search-overlay-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.95);
+  }
+}
+
+/* Mobile search input focus effect */
+.mobile-search-input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-search-input:focus {
+  border-color: hsl(var(--primary));
+  box-shadow: 
+    0 0 0 4px hsl(var(--primary) / 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+/* Mobile search button animations */
+.mobile-search-action {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-search-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.4);
+}
+
+.mobile-search-action:active {
+  transform: translateY(0);
+}
+
+/* Mobile search result animations */
+.mobile-search-result {
+  animation: mobile-result-enter 0.3s ease-out;
+}
+
+@keyframes mobile-result-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Search icon bounce effect */
+.search-icon-mobile {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-icon-mobile:hover {
+  transform: scale(1.1);
+}
+
+/* Mobile search overlay specific styles */
+.mobile-search-overlay {
+  /* Removed backdrop blur for solid background */
+}
+
+/* Search overlay content animations */
+.mobile-search-overlay .space-y-2 > * {
+  animation: mobile-overlay-item-enter 0.3s ease-out backwards;
+}
+
+.mobile-search-overlay .space-y-2 > *:nth-child(1) { animation-delay: 0.05s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(2) { animation-delay: 0.1s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(3) { animation-delay: 0.15s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(4) { animation-delay: 0.2s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(5) { animation-delay: 0.25s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(6) { animation-delay: 0.3s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(7) { animation-delay: 0.35s; }
+.mobile-search-overlay .space-y-2 > *:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes mobile-overlay-item-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enhanced mobile search input */
+.mobile-search-overlay input {
+  font-size: 16px; /* Prevents iOS zoom */
+  transition: all 0.3s ease;
+}
+
+.mobile-search-overlay input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
 /* Action button hover effects */
 .action-button {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

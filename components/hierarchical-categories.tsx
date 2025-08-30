@@ -621,7 +621,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
             )}
 
             {currentPath.length === 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 category-scroll max-h-[600px] overflow-y-auto p-1">
+                             <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 category-scroll max-h-[600px] overflow-y-auto p-1">
                 {currentLevel.map((node, index) => {
                   const categoryImage = getCategoryImage(node.text)
                   return (
@@ -632,14 +632,14 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                       style={{ animationDelay: `${index * 50}ms` }}
                       onClick={() => navigateToCategory(node)}
                     >
-                      <div className="flex flex-col w-full">
-                                                  <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
+                                             <div className="flex flex-col w-full">
+                         <div className="relative aspect-square sm:aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
                           {categoryImage ? (
                             <>
                               <img 
                                 src={categoryImage} 
                                 alt={node.text}
-                                className="w-full h-full object-contain scale-90 transition-transform duration-300 group-hover:scale-100"
+                                className="w-full h-full object-contain scale-75 sm:scale-90 transition-transform duration-300 group-hover:scale-90 sm:group-hover:scale-100"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement
                                   target.style.display = 'none'
@@ -647,16 +647,16 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                                   if (fallback) fallback.classList.remove('hidden')
                                 }}
                               />
-                              <div className="hidden w-full h-full flex items-center justify-center">
-                                <div className="p-4 bg-primary/10 rounded-full">
-                                  <Grid3x3 className="h-8 w-8 text-primary" />
-                                </div>
-                              </div>
+                                                             <div className="hidden w-full h-full flex items-center justify-center">
+                                 <div className="p-2 sm:p-4 bg-primary/10 rounded-full">
+                                   <Grid3x3 className="h-4 w-4 sm:h-8 sm:w-8 text-primary" />
+                                 </div>
+                               </div>
                             </>
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <div className="p-4 bg-primary/10 rounded-full">
-                                <Grid3x3 className="h-8 w-8 text-primary" />
+                              <div className="p-2 sm:p-4 bg-primary/10 rounded-full">
+                                <Grid3x3 className="h-4 w-4 sm:h-8 sm:w-8 text-primary" />
                               </div>
                             </div>
                           )}
@@ -670,17 +670,17 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                           </div>
                         </div>
                         
-                        <div className="p-3 flex-1">
-                          <div className="font-semibold text-sm mb-1 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
-                            {node.text}
-                          </div>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Layers className="h-3 w-3 flex-shrink-0" />
-                            <span className="truncate">
-                              {node.children.length} sous-catégorie{node.children.length > 1 ? 's' : ''}
-                            </span>
-                          </div>
-                        </div>
+                                                 <div className="p-2 sm:p-3 flex-1">
+                           <div className="font-semibold text-xs sm:text-sm mb-1 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                             {node.text}
+                           </div>
+                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                             <Layers className="h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0" />
+                             <span className="truncate text-xs">
+                               {node.children.length}
+                             </span>
+                           </div>
+                         </div>
                       </div>
                     </Button>
                   )

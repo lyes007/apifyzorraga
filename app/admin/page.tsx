@@ -4,10 +4,11 @@ import { useState } from 'react'
 import AdminOverview from '@/components/admin/admin-overview'
 import AdminDashboard from '@/components/admin/admin-dashboard'
 import OrderDetail from '@/components/admin/order-detail'
+import CustomersSection from '@/components/admin/customers-section'
 import { AdminNav } from '@/components/admin/admin-nav'
 
 export default function AdminPage() {
-  const [view, setView] = useState<'overview' | 'orders' | 'order-detail'>('overview')
+  const [view, setView] = useState<'overview' | 'orders' | 'customers' | 'order-detail'>('overview')
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
 
   const handleViewOrder = (orderId: string) => {
@@ -41,6 +42,12 @@ export default function AdminPage() {
       {view === 'orders' && (
         <AdminDashboard 
           onViewOrder={handleViewOrder} 
+          onBack={handleBackToOverview}
+        />
+      )}
+      
+      {view === 'customers' && (
+        <CustomersSection 
           onBack={handleBackToOverview}
         />
       )}

@@ -666,44 +666,73 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  {article.oemNo && article.oemNo.length > 0 ? (
+                                    {article.oemNo && article.oemNo.length > 0 ? (
                     <div className="space-y-4">
-
-                      
-                      {/* OEM References */}
-                      {article.oemNo.map((oem, index) => (
-                        <div key={index} className="border border-border/40 rounded-lg p-4 hover:bg-muted/20 transition-colors">
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <Award className="h-4 w-4 text-primary" />
-                              </div>
-                              <div>
-                                <h4 className="font-semibold text-sm">{oem.oemBrand || 'Constructeur'}</h4>
-                                <p className="text-xs text-muted-foreground">Référence OE</p>
-                              </div>
-                            </div>
-                            <Badge variant="secondary" className="text-xs">
-                              OE
-                            </Badge>
-                  </div>
-                          
-                          <div className="flex items-center justify-between bg-background/50 p-2 rounded-md border border-border/30">
-                            <code className="text-xs font-mono font-medium text-foreground">
-                              {oem.oemDisplayNo}
-                            </code>
+                      {/* Header with count */}
+                      <div className="flex items-center justify-between p-2 bg-muted/30 rounded-lg">
+                        <span className="text-sm font-medium">
+                          {article.oemNo.length} référence{article.oemNo.length > 1 ? 's' : ''} OE trouvée{article.oemNo.length > 1 ? 's' : ''}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {article.oemNo.length > 1 && (
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="sm"
-                              className="h-6 w-6 p-0 hover:bg-primary/10"
-                              onClick={() => copyToClipboard(oem.oemDisplayNo)}
-                              title="Copier la référence"
+                              className="h-7 px-2 text-xs"
+                              onClick={() => {
+                                const allRefs = article.oemNo.map(oem => `${oem.oemBrand}: ${oem.oemDisplayNo}`).join('\n')
+                                copyToClipboard(allRefs)
+                              }}
+                              title="Copier toutes les références"
                             >
-                              <Copy className="h-3 w-3" />
+                              <Copy className="h-3 w-3 mr-1" />
+                              Tout copier
                             </Button>
-                  </div>
-                </div>
-              ))}
+                          )}
+                          {article.oemNo.length > 3 && (
+                            <span className="text-xs text-muted-foreground">
+                              Défiler pour voir plus
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* OEM References */}
+                      <div className="space-y-3 max-h-96 overflow-y-auto category-scroll">
+                        {article.oemNo.map((oem, index) => (
+                          <div key={index} className="border border-border/40 rounded-lg p-4 hover:bg-muted/20 transition-colors">
+                            <div className="flex items-center justify-between mb-3">
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                                  <Award className="h-4 w-4 text-primary" />
+                                </div>
+                                <div>
+                                  <h4 className="font-semibold text-sm">{oem.oemBrand || 'Constructeur'}</h4>
+                                  <p className="text-xs text-muted-foreground">Référence OE</p>
+                                </div>
+                              </div>
+                              <Badge variant="secondary" className="text-xs">
+                                OE
+                              </Badge>
+                            </div>
+                            
+                            <div className="flex items-center justify-between bg-background/50 p-2 rounded-md border border-border/30">
+                              <code className="text-xs font-mono font-medium text-foreground">
+                                {oem.oemDisplayNo}
+                              </code>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 hover:bg-primary/10"
+                                onClick={() => copyToClipboard(oem.oemDisplayNo)}
+                                title="Copier la référence"
+                              >
+                                <Copy className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                       
                       {/* Summary */}
                       <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">

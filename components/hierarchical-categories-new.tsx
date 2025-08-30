@@ -28,21 +28,17 @@ const getCategoryImage = (categoryName: string): string | null => {
     'Accessoires': '/categories/Accessoires.jpeg',
     'Alimentation carburant': '/categories/Alimentation carburant.jpg',
     'Allumage / préchauffage': '/categories/Allumage  préchauffage.jpeg',
-    'Allumage préchauffage': '/categories/Allumage  préchauffage.jpeg',
     'Boîte de vitesses': '/categories/Boîte de vitesses.jpeg',
     'Carburation': '/categories/Carburation.jpeg',
     'Carrosserie': '/categories/Carrosserie.jpeg',
     'Chauffage / Ventilation': '/categories/Chauffage  Ventilation.jpeg',
-    'Chauffage Ventilation': '/categories/Chauffage  Ventilation.jpeg',
     'Climatisation': '/categories/Climatisation.jpeg',
     'Commande à courroie': '/categories/Commande à courroie.jpeg',
     'Direction': '/categories/Direction.jpeg',
     'Dispositif d\'attelage accessoires': '/categories/Dispositif d\'attelage accessoires.jpeg',
-    'Dispositif dattelage accessoires': '/categories/Dispositif d\'attelage accessoires.jpeg',
     'Dispositif de freinage': '/categories/Dispositif de freinage.jpeg',
     'Échappement': '/categories/Échappement.jpeg',
     'Embrayage / composants': '/categories/Embrayage  composants.jpeg',
-    'Embrayage composants': '/categories/Embrayage  composants.jpeg',
     'Entraînement des essieux': '/categories/Entraînement des essieux.jpeg',
     'Entraînement des roues': '/categories/Entraînement des roues.jpeg',
     'Entraînement hybride électrique': '/categories/Entraînement hybride électrique.jpeg',
@@ -57,13 +53,9 @@ const getCategoryImage = (categoryName: string): string | null => {
     'Prise de force': '/categories/Prise de force.jpeg',
     'Refroidissement': '/categories/Refroidissement.jpeg',
     'Roues / Pneus': '/categories/Roues Pneus.jpeg',
-    'Roues Pneus': '/categories/Roues Pneus.jpeg',
     'Suspension / Amortissement': '/categories/Suspension Amortissement.jpeg',
-    'Suspension Amortissement': '/categories/Suspension Amortissement.jpeg',
     'Suspension d\'essieu / Guidage des roues / Roues': '/categories/Suspension d\'essieu Guidage des roues Roues.jpeg',
-    'Suspension dessieu Guidage des roues Roues': '/categories/Suspension d\'essieu Guidage des roues Roues.jpeg',
     'Système d\'information et de communication': '/categories/Système d\'information et de communication.jpeg',
-    'Système dinformation et de communication': '/categories/Système d\'information et de communication.jpeg',
     'Système électrique': '/categories/Système électrique.jpeg',
     'Système pneumatique': '/categories/Système pneumatique.jpeg',
     'Systèmes de confort': '/categories/Systèmes de confort.jpeg',
@@ -76,17 +68,6 @@ const getCategoryImage = (categoryName: string): string | null => {
     return imageMap[normalizedName]
   }
   
-  // Try with normalized name (remove/replace special characters)
-  const normalizedForFile = normalizedName
-    .replace(/\//g, ' ')  // Replace / with space
-    .replace(/'/g, '')    // Remove apostrophes
-    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-    .trim()
-  
-  if (imageMap[normalizedForFile]) {
-    return imageMap[normalizedForFile]
-  }
-  
   // Try fuzzy matching for common variations
   const fuzzyMatches: Record<string, string> = {
     'accessoire': 'Accessoires',
@@ -96,13 +77,9 @@ const getCategoryImage = (categoryName: string): string | null => {
     'direction': 'Direction',
     'climatisation': 'Climatisation',
     'carrosserie': 'Carrosserie',
-    'suspension': 'Suspension Amortissement',
-    'embrayage': 'Embrayage composants',
-    'échappement': 'Échappement',
-    'allumage': 'Allumage préchauffage',
-    'chauffage': 'Chauffage Ventilation',
-    'roues': 'Roues Pneus',
-    'pneus': 'Roues Pneus'
+    'suspension': 'Suspension / Amortissement',
+    'embrayage': 'Embrayage / composants',
+    'échappement': 'Échappement'
   }
   
   const lowerName = normalizedName.toLowerCase()
@@ -633,13 +610,13 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                       onClick={() => navigateToCategory(node)}
                     >
                       <div className="flex flex-col w-full">
-                                                  <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
+                        <div className="relative aspect-square bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
                           {categoryImage ? (
                             <>
                               <img 
                                 src={categoryImage} 
                                 alt={node.text}
-                                className="w-full h-full object-contain scale-90 transition-transform duration-300 group-hover:scale-100"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement
                                   target.style.display = 'none'

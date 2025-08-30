@@ -168,11 +168,11 @@ export function Header() {
     await handleSearch()
   }
 
-  const handleArticleSelect = (articleId: number) => {
-    setShowSearchResults(false)
-    setSearchQuery("")
-    router.push(`/?articleId=${articleId}`)
-  }
+     const handleArticleSelect = (articleId: number) => {
+     setShowSearchResults(false)
+     setSearchQuery("")
+     router.push(`/article/${articleId}`)
+   }
 
   const handleViewAllResults = () => {
     setShowSearchResults(false)
@@ -679,12 +679,42 @@ export function Header() {
                   {searchResults.slice(0, 8).map((article, index) => (
                     <div
                       key={article.articleId}
-                      onClick={() => {
-                        handleArticleSelect(article.articleId)
+                      onTouchEnd={(e) => {
+                        console.log('=== MOBILE SEARCH TOUCH DEBUG ===')
+                        console.log('Touch end event triggered')
+                        console.log('Article ID:', article.articleId)
+                        console.log('Article object:', article)
+                        
+                        e.preventDefault()
+                        e.stopPropagation()
+                        
+                        try {
+                          console.log('Attempting to close mobile search...')
+                          collapseMobileSearch()
+                          console.log('Mobile search closed')
+                          
+                          console.log('Attempting navigation to:', `/article/${article.articleId}`)
+                          router.push(`/article/${article.articleId}`)
+                          console.log('Navigation attempted')
+                        } catch (error) {
+                          console.error('Error during navigation:', error)
+                        }
+                        
+                        console.log('=== END TOUCH DEBUG ===')
+                      }}
+                      onClick={(e) => {
+                        console.log('Click event also triggered')
+                        e.preventDefault()
+                        e.stopPropagation()
                         collapseMobileSearch()
+                        router.push(`/article/${article.articleId}`)
                       }}
                       className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors mobile-search-result"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      style={{ 
+                        animationDelay: `${index * 50}ms`,
+                        touchAction: 'manipulation',
+                        userSelect: 'none'
+                      }}
                     >
                       <div className="w-12 h-12 bg-muted/30 rounded-lg flex-shrink-0 overflow-hidden">
                         {article.imageLink ? (

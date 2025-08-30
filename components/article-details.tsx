@@ -169,6 +169,8 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
           }
         }
 
+
+
         setArticle({
           ...articleDetails,
           allMedia: allMedia,
@@ -650,56 +652,135 @@ export function ArticleDetails({ articleId, onBack }: ArticleDetailsProps) {
             </Card>
           </TabsContent>
 
-          <TabsContent value="compatibility" className="mt-6 tab-content-enter">
-            <Card className="mobile-detail-section">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  Compatibilité véhicule
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {article.oemNo && article.oemNo.length > 0 ? (
-          <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                      Ce produit est compatible avec les références OE suivantes :
-                    </p>
-                    <div className="grid gap-2">
-                      {article.oemNo.slice(0, 10).map((oem, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <div>
-                            <span className="font-medium text-sm">{oem.manufacturerName}</span>
-                            <p className="text-xs text-muted-foreground">Référence OE</p>
+                    <TabsContent value="compatibility" className="mt-6 tab-content-enter">
+            <div className="space-y-6">
+              {/* OEM Numbers Section */}
+              <Card className="mobile-detail-section">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    Références OE / OEM
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Numéros de pièces d'origine constructeur compatibles
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  {article.oemNo && article.oemNo.length > 0 ? (
+                    <div className="space-y-4">
+
+                      
+                      {/* OEM References */}
+                      {article.oemNo.map((oem, index) => (
+                        <div key={index} className="border border-border/40 rounded-lg p-4 hover:bg-muted/20 transition-colors">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <Award className="h-4 w-4 text-primary" />
+                              </div>
+                              <div>
+                                <h4 className="font-semibold text-sm">{oem.oemBrand || 'Constructeur'}</h4>
+                                <p className="text-xs text-muted-foreground">Référence OE</p>
+                              </div>
+                            </div>
+                            <Badge variant="secondary" className="text-xs">
+                              OE
+                            </Badge>
                   </div>
-                          <div className="flex items-center gap-2">
-                            <code className="bg-background px-2 py-1 rounded text-xs font-mono">
-                              {oem.oemNumber}
+                          
+                          <div className="flex items-center justify-between bg-background/50 p-2 rounded-md border border-border/30">
+                            <code className="text-xs font-mono font-medium text-foreground">
+                              {oem.oemDisplayNo}
                             </code>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-6 w-6 p-0"
-                              onClick={() => copyToClipboard(oem.oemNumber)}
+                              className="h-6 w-6 p-0 hover:bg-primary/10"
+                              onClick={() => copyToClipboard(oem.oemDisplayNo)}
+                              title="Copier la référence"
                             >
                               <Copy className="h-3 w-3" />
                             </Button>
                   </div>
                 </div>
               ))}
+                      
+                      {/* Summary */}
+                      <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
+                        <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                          <CheckCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">
+                            {article.oemNo.length} référence{article.oemNo.length > 1 ? 's' : ''} OE compatible{article.oemNo.length > 1 ? 's' : ''}
+                          </span>
+                        </div>
+                        <p className="text-xs text-green-600 dark:text-green-500 mt-1">
+                          Cette pièce remplace directement les références d'origine constructeur
+                        </p>
             </div>
-                    {article.oemNo.length > 10 && (
-                      <p className="text-xs text-muted-foreground text-center">
-                        + {article.oemNo.length - 10} autres références compatibles
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="w-16 h-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Info className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <h4 className="font-medium mb-2">Aucune référence OE disponible</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Les informations de compatibilité OE ne sont pas disponibles pour cette pièce
                       </p>
-                    )}
+
           </div>
-                ) : (
-                  <p className="text-muted-foreground text-center py-8">
-                    Informations de compatibilité non disponibles.
-                  </p>
         )}
       </CardContent>
     </Card>
+
+              {/* Vehicle Compatibility Info */}
+              <Card className="mobile-detail-section">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Truck className="h-5 w-5 text-blue-600" />
+                    Informations de compatibilité
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Shield className="h-4 w-4 text-blue-600" />
+                          <span className="font-medium text-sm">Garantie de compatibilité</span>
+                        </div>
+                        <p className="text-xs text-blue-700 dark:text-blue-400">
+                          Pièce garantie compatible selon les spécifications TecDoc
+                        </p>
+                      </div>
+                      
+                      <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <AlertCircle className="h-4 w-4 text-amber-600" />
+                          <span className="font-medium text-sm">Vérification recommandée</span>
+                        </div>
+                        <p className="text-xs text-amber-700 dark:text-amber-400">
+                          Vérifiez toujours la compatibilité avec votre véhicule avant commande
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 border border-border/40 rounded-lg">
+                      <h5 className="font-medium text-sm mb-2 flex items-center gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        Comment vérifier la compatibilité
+                      </h5>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• Comparez avec la référence d'origine de votre pièce</li>
+                        <li>• Vérifiez le numéro VIN de votre véhicule</li>
+                        <li>• Consultez le manuel technique de votre véhicule</li>
+                        <li>• Contactez notre service technique en cas de doute</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="delivery" className="mt-6 tab-content-enter">

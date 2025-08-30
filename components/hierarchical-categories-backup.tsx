@@ -28,21 +28,17 @@ const getCategoryImage = (categoryName: string): string | null => {
     'Accessoires': '/categories/Accessoires.jpeg',
     'Alimentation carburant': '/categories/Alimentation carburant.jpg',
     'Allumage / préchauffage': '/categories/Allumage  préchauffage.jpeg',
-    'Allumage préchauffage': '/categories/Allumage  préchauffage.jpeg',
     'Boîte de vitesses': '/categories/Boîte de vitesses.jpeg',
     'Carburation': '/categories/Carburation.jpeg',
     'Carrosserie': '/categories/Carrosserie.jpeg',
     'Chauffage / Ventilation': '/categories/Chauffage  Ventilation.jpeg',
-    'Chauffage Ventilation': '/categories/Chauffage  Ventilation.jpeg',
     'Climatisation': '/categories/Climatisation.jpeg',
     'Commande à courroie': '/categories/Commande à courroie.jpeg',
     'Direction': '/categories/Direction.jpeg',
     'Dispositif d\'attelage accessoires': '/categories/Dispositif d\'attelage accessoires.jpeg',
-    'Dispositif dattelage accessoires': '/categories/Dispositif d\'attelage accessoires.jpeg',
     'Dispositif de freinage': '/categories/Dispositif de freinage.jpeg',
     'Échappement': '/categories/Échappement.jpeg',
     'Embrayage / composants': '/categories/Embrayage  composants.jpeg',
-    'Embrayage composants': '/categories/Embrayage  composants.jpeg',
     'Entraînement des essieux': '/categories/Entraînement des essieux.jpeg',
     'Entraînement des roues': '/categories/Entraînement des roues.jpeg',
     'Entraînement hybride électrique': '/categories/Entraînement hybride électrique.jpeg',
@@ -57,13 +53,9 @@ const getCategoryImage = (categoryName: string): string | null => {
     'Prise de force': '/categories/Prise de force.jpeg',
     'Refroidissement': '/categories/Refroidissement.jpeg',
     'Roues / Pneus': '/categories/Roues Pneus.jpeg',
-    'Roues Pneus': '/categories/Roues Pneus.jpeg',
     'Suspension / Amortissement': '/categories/Suspension Amortissement.jpeg',
-    'Suspension Amortissement': '/categories/Suspension Amortissement.jpeg',
     'Suspension d\'essieu / Guidage des roues / Roues': '/categories/Suspension d\'essieu Guidage des roues Roues.jpeg',
-    'Suspension dessieu Guidage des roues Roues': '/categories/Suspension d\'essieu Guidage des roues Roues.jpeg',
     'Système d\'information et de communication': '/categories/Système d\'information et de communication.jpeg',
-    'Système dinformation et de communication': '/categories/Système d\'information et de communication.jpeg',
     'Système électrique': '/categories/Système électrique.jpeg',
     'Système pneumatique': '/categories/Système pneumatique.jpeg',
     'Systèmes de confort': '/categories/Systèmes de confort.jpeg',
@@ -76,17 +68,6 @@ const getCategoryImage = (categoryName: string): string | null => {
     return imageMap[normalizedName]
   }
   
-  // Try with normalized name (remove/replace special characters)
-  const normalizedForFile = normalizedName
-    .replace(/\//g, ' ')  // Replace / with space
-    .replace(/'/g, '')    // Remove apostrophes
-    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-    .trim()
-  
-  if (imageMap[normalizedForFile]) {
-    return imageMap[normalizedForFile]
-  }
-  
   // Try fuzzy matching for common variations
   const fuzzyMatches: Record<string, string> = {
     'accessoire': 'Accessoires',
@@ -96,13 +77,9 @@ const getCategoryImage = (categoryName: string): string | null => {
     'direction': 'Direction',
     'climatisation': 'Climatisation',
     'carrosserie': 'Carrosserie',
-    'suspension': 'Suspension Amortissement',
-    'embrayage': 'Embrayage composants',
-    'échappement': 'Échappement',
-    'allumage': 'Allumage préchauffage',
-    'chauffage': 'Chauffage Ventilation',
-    'roues': 'Roues Pneus',
-    'pneus': 'Roues Pneus'
+    'suspension': 'Suspension / Amortissement',
+    'embrayage': 'Embrayage / composants',
+    'échappement': 'Échappement'
   }
   
   const lowerName = normalizedName.toLowerCase()
@@ -395,6 +372,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
     }
     
     sortNodes(rootNodes)
+    
     setCategoryTree(rootNodes)
     setCurrentLevel(rootNodes)
   }
@@ -413,7 +391,10 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
         category.levelText_2, 
         category.levelText_3,
         category.levelText_4
-      ].filter(Boolean).join(" ").toLowerCase()
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
       
       return searchText.includes(searchTerm.toLowerCase())
     })
@@ -528,6 +509,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
           Catégories de Pièces
         </CardTitle>
         
+        {/* Search */}
         <div className="relative mt-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
           <Input
@@ -551,6 +533,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
       
       <CardContent className="pt-2">
         {isSearching ? (
+          // Search Results
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground border-b pb-2">
               <Search className="h-4 w-4" />
@@ -589,7 +572,9 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
             </div>
           </div>
         ) : (
+          // Hierarchical Navigation
           <div className="space-y-4">
+            {/* Breadcrumb */}
             {currentPath.length > 0 && (
               <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
                 <Button 
@@ -620,7 +605,9 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
               </div>
             )}
 
+            {/* Current Level Categories */}
             {currentPath.length === 0 ? (
+              /* Level 1 Categories - Modern Grid with Images */
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 category-scroll max-h-[600px] overflow-y-auto p-1">
                 {currentLevel.map((node, index) => {
                   const categoryImage = getCategoryImage(node.text)
@@ -633,26 +620,25 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                       onClick={() => navigateToCategory(node)}
                     >
                       <div className="flex flex-col w-full">
-                                                  <div className="relative aspect-[4/3] bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
+                        {/* Image Section */}
+                        <div className="relative aspect-square bg-gradient-to-br from-muted/30 to-muted/10 overflow-hidden">
                           {categoryImage ? (
-                            <>
-                              <img 
-                                src={categoryImage} 
-                                alt={node.text}
-                                className="w-full h-full object-contain scale-90 transition-transform duration-300 group-hover:scale-100"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement
-                                  target.style.display = 'none'
-                                  const fallback = target.nextElementSibling as HTMLElement
-                                  if (fallback) fallback.classList.remove('hidden')
-                                }}
-                              />
-                              <div className="hidden w-full h-full flex items-center justify-center">
-                                <div className="p-4 bg-primary/10 rounded-full">
-                                  <Grid3x3 className="h-8 w-8 text-primary" />
-                                </div>
+                            <img 
+                              src={categoryImage} 
+                              alt={node.text}
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              onError={(e) => {
+                                // Fallback to icon if image fails to load
+                                const target = e.target as HTMLImageElement
+                                target.style.display = 'none'
+                                target.nextElementSibling?.classList.remove('hidden')
+                              }}
+                            />
+                            <div className="hidden w-full h-full flex items-center justify-center">
+                              <div className="p-4 bg-primary/10 rounded-full">
+                                <Grid3x3 className="h-8 w-8 text-primary" />
                               </div>
-                            </>
+                            </div>
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <div className="p-4 bg-primary/10 rounded-full">
@@ -661,8 +647,10 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                             </div>
                           )}
                           
+                          {/* Overlay for better text readability */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                           
+                          {/* Category Count Badge */}
                           <div className="absolute top-2 right-2">
                             <Badge variant="secondary" className="text-xs bg-background/90 backdrop-blur-sm">
                               {node.children.length}
@@ -670,6 +658,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                           </div>
                         </div>
                         
+                        {/* Text Section */}
                         <div className="p-3 flex-1">
                           <div className="font-semibold text-sm mb-1 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
                             {node.text}
@@ -687,6 +676,7 @@ export function HierarchicalCategories({ manufacturerId, vehicleId, onCategorySe
                 })}
               </div>
             ) : (
+              /* Sub-level Categories - List View */
               <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 category-scroll max-h-96 overflow-y-auto p-1">
                 {currentLevel.map((node, index) => (
                   <Button

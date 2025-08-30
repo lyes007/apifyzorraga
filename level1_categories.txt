@@ -1,0 +1,40 @@
+Level 1 Categories:
+==================================================
+ 1. Accessoires
+ 2. Alimentation carburant
+ 3. Allumage / préchauffage
+ 4. Boîte de vitesses
+ 5. Carburation
+ 6. Carrosserie
+ 7. Chauffage / Ventilation
+ 8. Climatisation
+ 9. Commande à courroie
+10. Direction
+11. Dispositif d'attelage/accessoires
+12. Dispositif de freinage
+13. Embrayage / composants
+14. Entraînement des essieux
+15. Entraînement des roues
+16. Entraînement hybride/électrique
+17. Filtre
+18. Moteur
+19. Nettoyage des phares
+20. Nettoyage des vitres
+21. Outils spéciaux
+22. Pièces de maintenance
+23. Portes-bagages
+24. Prise de force
+25. Refroidissement
+26. Roues/Pneus
+27. Suspension d'essieu/Guidage des roues/Roues
+28. Suspension/Amortissement
+29. Système d'information et de communication
+30. Système pneumatique
+31. Système électrique
+32. Systèmes de confort
+33. Systèmes de sécurité
+34. Verrouillage
+35. Échappement
+36. Équipement intérieur
+
+Total: 36 categories
